@@ -21,4 +21,14 @@ methods.serviceToGetAllContacts = async () => {
     }
 }
 
+methods.serviceToUpdateContactByID = async (requestData) => {
+    try {
+        const updatedContact = await userRepository.updateContactByID(requestData);
+        return updatedContact;
+    }
+    catch(error) {
+        throw error;
+    }
+}
+
 module.exports = methods;

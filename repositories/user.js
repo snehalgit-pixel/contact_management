@@ -28,8 +28,7 @@ methods.userSignUp = async (requestData) => {
         }
     }
     catch (error) {
-        console.log(error);
-        throw error;
+        logAndThrowError(error);
     }
 }
 
@@ -54,10 +53,57 @@ methods.getAllContacts = async () => {
             }
         }
     }
-    catch(error) {
-        console.log(error);
-        throw error;
+    catch (error) {
+        logAndThrowError(error);
     }
+}
+
+methods.updateContactByID = async (requestData) => {
+    try {
+        const mySql2 = await connection.connectToDB();
+        if (requestData?.name) {
+            const queryToUpdateName = `update contact set name=? where id=?`;
+            const [result] = await mySql2.query(queryToUpdateName, [requestData.name, requestData.id]);
+            if (result?.affectedRows < 1) {
+                throw {
+                    error: {
+                        message: "ERROR: While trying to update the name of the record."
+                    }
+                }
+            }
+        }
+        if (requestData?.email) {
+            const queryToUpdateEmail = `update contact set email=? where id=?`;
+            const [result] = await mySql2.query(queryToUpdateEmail, [requestData.email, requestData.id]);
+            if (result?.affectedRows < 1) {
+                throw {
+                    error: {
+                        message: "ERROR: While trying to update the email ID of the record."
+                    }
+                }
+            }
+        }
+        if (requestData?.mobile) {
+            const queryToUpdateMobile = `update contact set mobile=? where id=?`;
+            const [result] = await mySql2.query(queryToUpdateMobile, [requestData.mobile, requestData.id]);
+            if (result?.affectedRows < 1) {
+                throw {
+                    error: {
+                        message: "ERROR: While trying to update the mobile number of the record."
+                    }
+                }
+            }
+        }
+        return { ID: requestData.id };
+    }
+    catch (error) {
+        logAndThrowError(error);
+    }
+}
+
+const logAndThrowError = (error) => {
+    console.log(error);
+    throw error;
 }
 
 module.exports = methods;
