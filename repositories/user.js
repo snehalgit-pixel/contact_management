@@ -131,6 +131,30 @@ methods.addContact = async (requestData) => {
     }
 }
 
+methods.deleteContact = async (requestData) => {
+    try {
+        const mySql2 = await connection.connectToDB();
+        const queryToDeleteContact = `DELETE FROM contact WHERE id = ?`;
+        const [result] = await mySql2.query(queryToDeleteContact, [
+            requestData.id,
+        ]);
+        if (result?.affectedRows < 1) {
+            throw {
+                error: {
+                    message: "ERROR: While trying to update the name of the record."
+                }
+            }
+        }
+        return {
+            id: requestData.id,
+            delete_message: "Deleted successfully."
+        }
+    }
+    catch(error) {
+        logAndThrowError(error);
+    }
+}
+
 const logAndThrowError = (error) => {
     console.log(error);
     throw error;

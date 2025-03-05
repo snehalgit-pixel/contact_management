@@ -5,7 +5,8 @@ const userController = require('../controllers/user');
 
 router.post('/signup', userController.controllerForUserSignUp);
 router.get('/contacts', userController.controllerToGetAllContacts);
-router.patch('/update-contact-by-ID', userController.controllerToUpdateContactByID);
-router.post('/add-contact', userController.controllerToAddContact);
+router.patch('/contact/update-by-ID', userController.controllerToUpdateContactByID);
+router.post('/contact/add', userController.controllerToAddContact);
+router.delete('/contact/delete', userController.controllerToDeleteContact);
 
 module.exports = router;

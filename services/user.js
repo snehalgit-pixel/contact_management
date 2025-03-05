@@ -41,4 +41,14 @@ methods.serviceToAddContact = async (requestData) => {
     }
 }
 
+methods.serviceToDeleteContact = async (requestData) => {
+    try {
+        const deletedContact = await userRepository.deleteContact(requestData);
+        return deletedContact;
+    }
+    catch(error) {
+        throw error;
+    }
+}
+
 module.exports = methods;
