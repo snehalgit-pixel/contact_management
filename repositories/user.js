@@ -101,6 +101,36 @@ methods.updateContactByID = async (requestData) => {
     }
 }
 
+methods.addContact = async (requestData) => {
+    try {
+        const mySql2 = await connection.connectToDB();
+        const queryToAddContact = `INSERT INTO contact (name, mobile, email, isRegistered) VALUES (?, ?, ?, ?)`;
+        const [result] = await mySql2.query(queryToAddContact, [
+            requestData.name,
+            requestData.mobile,
+            requestData.email,
+            requestData.isRegistered
+        ]);
+        if (result?.affectedRows < 1) {
+            throw {
+                error: {
+                    message: "ERROR: While trying to update the name of the record."
+                }
+            }
+        }
+        const queryToFetchContactIDByMobile = `select id from contact where mobile=?`;
+        const [rows, fields] = await mySql2.query(queryToFetchContactIDByMobile, [requestData.mobile]);
+        let id = Array.isArray(rows) && rows[0]?.id ? rows[0].id : undefined;
+        return {
+            id,
+            name: requestData.name
+        }
+    }
+    catch (error) {
+        logAndThrowError(error);
+    }
+}
+
 const logAndThrowError = (error) => {
     console.log(error);
     throw error;

@@ -31,4 +31,14 @@ methods.serviceToUpdateContactByID = async (requestData) => {
     }
 }
 
+methods.serviceToAddContact = async (requestData) => {
+    try {
+        const addedContact = await userRepository.addContact(requestData);
+        return addedContact;
+    }
+    catch(error) {
+        throw error;
+    }
+}
+
 module.exports = methods;
