@@ -33,4 +33,31 @@ methods.userSignUp = async (requestData) => {
     }
 }
 
+methods.getAllContacts = async () => {
+    try {
+        const mySql2 = await connection.connectToDB();
+        const queryToFetchAllContacts = `select * from contact`;
+        const [rows, fields] = await mySql2.query(queryToFetchAllContacts);
+        if (rows || fields) {
+            if (Array.isArray(rows) && rows.length) {
+                return rows;
+            }
+            else {
+                return [];
+            }
+        }
+        else {
+            throw {
+                error: {
+                    message: "ERROR: While fetching data from DB table"
+                }
+            }
+        }
+    }
+    catch(error) {
+        console.log(error);
+        throw error;
+    }
+}
+
 module.exports = methods;

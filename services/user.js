@@ -11,4 +11,14 @@ methods.serviceForUserSignUp = async (requestData) => {
     }
 }
 
+methods.serviceToGetAllContacts = async () => {
+    try {
+        const allUsers = await userRepository.getAllContacts();
+        return allUsers;
+    }
+    catch(error) {
+        throw error;
+    }
+}
+
 module.exports = methods;
